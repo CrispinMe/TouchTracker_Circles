@@ -5,7 +5,7 @@ Completed Challenge for Big Nerd Ranch iOS Programming Gold Challenge for Chapte
 
 Solution to allow two fingers to draw circles on the screen.
 
-Each finger represents one of the diagonally oposite corners of the bounding box surrounding the circle.
+Each finger represents one of the diagonally opposed corners of the bounding box surrounding the circle.
 
 The location data for the two touches gained from the UITouch objects is stored in a dictionary object. The keys for the two CGPoint values contained within the dictionary are derived from the two UITouch objects.
 
