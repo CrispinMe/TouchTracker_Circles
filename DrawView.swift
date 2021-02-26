@@ -46,18 +46,14 @@ class DrawView: UIView {
     
     func prepareCircleBoundingBoxes() {
         
+        //Create array to hold the begin and end values for the 2 lines in the circleLines bounding box
+        var circleLinesPoints: [CGPoint] = []
+        
+
         
         //Iterate through each circle bounding box in boundingBoxes and retieve the two lines and create a CGRect to pass to stroke function to draw the circle
          for (_, circleLines) in boundingBoxes {
             
-
-            
-            
-            //Create array to hold the begin and end values for the 2 lines in the circleLines bounding box
-            var circleLinesPoints: [CGPoint] = []
-
-
-
             
             for (key, _) in circleLines {
 
@@ -85,60 +81,50 @@ class DrawView: UIView {
             //Increment circleLinesCount counter
             drawCircleLinesCount += 1
             
-        }
+         
+        
+            //Check that data is present before executing the rest of the procedure
+            if circleLinesPoints.count > 0 {
 
-            
-                    //Loop through circleLinesPointsArray and create CGRect within which to draw the circle
-            
-            for circleLinesPoints in circleLinesPointsArray {
+
                 
                 //Declare variables to hold the x, y, width and height arguments that will be passed to the CGRect initializer
                     var beginX, beginY, rectWidth, rectHeight: CGFloat
 
            
                     //See which x coordinate for the two begins has the greater value and choose the lesser value as the x argument for the CGRect
-                    if circleLinesPoints[0].x > circleLinesPoints[2].x {
-                        beginX = circleLinesPoints[2].x
+                    if circleLinesPoints[1].x > circleLinesPoints[3].x {
+                        beginX = circleLinesPoints[3].x
                         
                     } else {
                         
-                        beginX = circleLinesPoints[0].x
+                        beginX = circleLinesPoints[1].x
                         
                     }
                     
                     //See which y coordinate for the two begins has the greater value and choose the lesser value as the y argument for the CGRect
-                    if circleLinesPoints[0].y > circleLinesPoints[2].y {
-                        beginY = circleLinesPoints[2].y
+                    if circleLinesPoints[1].y > circleLinesPoints[3].y {
+                        beginY = circleLinesPoints[3].y
                         
                     } else {
                         
-                        beginY = circleLinesPoints[0].y
+                        beginY = circleLinesPoints[1].y
                         
                     }
                     
-                    //See which x coordinate for the two ends has the greater value and choose the greater value as the width argument for the CGRect
+                    //See which x coordinate for the two ends has the greater value and then subtract the other value from that value to generate the width of the rect for the circle
                     if circleLinesPoints[1].x > circleLinesPoints[3].x {
-                        rectWidth = circleLinesPoints[1].x
-                        
+                        rectWidth = circleLinesPoints[1].x - circleLinesPoints[3].x
+
                     } else {
                         
-                        rectWidth = circleLinesPoints[3].x
-                        
+                        rectWidth = circleLinesPoints[3].x - circleLinesPoints[1].x
+
                     }
                     
-                    //See which y coordinate for the two ends has the greater value and then subtract the lesser value for generate the height argument for the CGRect
-                    
+                    //Set the height value for the rect to equal the width value so that the rect represents a square to which will give a circle rather than an ovoid
                     rectHeight = rectWidth
                 
-                    //if circleLinesPoints[1].y > circleLinesPoints[3].y {
-                        //rectHeight = circleLinesPoints[1].y - circleLinesPoints[3].y
-                        
-                    //} else {
-                        
-                        //rectHeight = circleLinesPoints[3].y - circleLinesPoints[1].y
-                        
-                    //}
-                    
                     
                     //Create the GCRect within which to draw the circle
                     let circleRect: CGRect = CGRect(x: beginX, y: beginY, width: rectWidth, height: rectHeight)
@@ -146,14 +132,21 @@ class DrawView: UIView {
                     //pass circleRect to the stroke function to draw the circle
                     stroke(circleRect)
                 }
-                
+            
+            //Empty circleLinesPointsArray array
+            circleLinesPointsArray.removeAll()
+            
+            //Empty circleLinesPoints array
+            circleLinesPoints.removeAll()
+
+            }
             
         }
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         //Empty circleLinesPointsArray array
-        circleLinesPointsArray.removeAll()
+        //circleLinesPointsArray.removeAll()
         
         //Check if UITouches Set contains 2 UITouches or not
         if touches.count == 2 {
